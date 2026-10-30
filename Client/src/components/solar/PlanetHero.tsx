@@ -30,10 +30,10 @@ function FloatingMoons({
   const seeds = useMemo(
     () =>
       Array.from({ length: Math.min(count, 8) }, (_, i) => ({
-        r: radius * (1.8 + (i % 3) * 0.35),
+        r: radius * (1.45 + (i % 3) * 0.22),
         speed: 0.35 + i * 0.08,
         y: ((i % 2) * 2 - 1) * 0.15 * radius,
-        size: 0.06 + (i % 3) * 0.025,
+        size: 0.045 + (i % 3) * 0.02,
         phase: (i / Math.max(count, 1)) * Math.PI * 2,
       })),
     [count, radius],
@@ -72,7 +72,7 @@ function Sparkles({ accent, count = 120 }: { accent: string; count?: number }) {
     const positions = new Float32Array(count * 3);
     const speeds = new Float32Array(count);
     for (let i = 0; i < count; i++) {
-      const r = 2.2 + Math.random() * 2.4;
+      const r = 1.7 + Math.random() * 1.35;
       const th = Math.random() * Math.PI * 2;
       const ph = (Math.random() - 0.5) * 1.2;
       positions[i * 3] = Math.cos(th) * Math.cos(ph) * r;
@@ -106,7 +106,7 @@ function Sparkles({ accent, count = 120 }: { accent: string; count?: number }) {
       </bufferGeometry>
       <pointsMaterial
         color={accent}
-        size={0.035}
+        size={0.028}
         transparent
         opacity={0.75}
         depthWrite={false}
@@ -121,8 +121,8 @@ function CursorTilt({ children }: { children: React.ReactNode }) {
   const { pointer } = useThree();
   useFrame((_, delta) => {
     if (!group.current) return;
-    group.current.rotation.y = MathUtils.damp(group.current.rotation.y, pointer.x * 0.35, 4, delta);
-    group.current.rotation.x = MathUtils.damp(group.current.rotation.x, -pointer.y * 0.22, 4, delta);
+    group.current.rotation.y = MathUtils.damp(group.current.rotation.y, pointer.x * 0.22, 4, delta);
+    group.current.rotation.x = MathUtils.damp(group.current.rotation.x, -pointer.y * 0.14, 4, delta);
   });
   return <group ref={group}>{children}</group>;
 }
@@ -130,7 +130,7 @@ function CursorTilt({ children }: { children: React.ReactNode }) {
 function ScrollZoom({ scrollRef }: { scrollRef: React.MutableRefObject<number> }) {
   const { camera } = useThree();
   useFrame((_, delta) => {
-    const targetZ = MathUtils.lerp(3.6, 5.4, scrollRef.current);
+    const targetZ = MathUtils.lerp(4.35, 5.6, scrollRef.current);
     camera.position.z = MathUtils.damp(camera.position.z, targetZ, 3, delta);
   });
   return null;
@@ -155,7 +155,7 @@ function RotatingPlanet({
   );
   const cloudTex: Texture | undefined = data.slug === "earth" ? cloudsMap : undefined;
   const ringTex: Texture | undefined = data.slug === "saturn" ? ringsMap : undefined;
-  const r = 1.35;
+  const r = data.slug === "saturn" ? 0.92 : 1.05;
 
   useFrame((_, delta) => {
     entrance.current = Math.min(1, entrance.current + delta * 0.9);
@@ -187,7 +187,7 @@ function RotatingPlanet({
           <meshStandardMaterial map={cloudTex} transparent opacity={0.45} depthWrite={false} />
         </mesh>
       )}
-      <mesh scale={1.18}>
+      <mesh scale={1.12}>
         <sphereGeometry args={[r, 32, 32]} />
         <meshBasicMaterial
           color={data.accent}
@@ -200,7 +200,7 @@ function RotatingPlanet({
       </mesh>
       {ringTex && (
         <mesh rotation={[Math.PI / 2.3, 0, 0]}>
-          <ringGeometry args={[r * 1.4, r * 2.5, 128]} />
+          <ringGeometry args={[r * 1.35, r * 2.05, 128]} />
           <meshStandardMaterial
             map={ringTex}
             transparent
@@ -230,14 +230,20 @@ export function PlanetHero({
   const entrance = useRef(0);
 
   return (
-    <div className="relative h-[62vh] min-h-[380px] w-full overflow-hidden rounded-3xl border border-white/10 md:h-[70vh]">
+    <div className="relative isolate h-[min(58vh,560px)] min-h-[300px] w-full max-w-full overflow-hidden rounded-3xl border border-white/10 md:h-[min(64vh,640px)]">
       <div
         className="absolute inset-0"
         style={{
           background: `radial-gradient(ellipse at 50% 40%, ${data.accent}33 0%, transparent 55%), linear-gradient(180deg, ${data.gradientFrom}, ${data.gradientTo})`,
         }}
       />
-      <Canvas dpr={[1, 1.6]} camera={{ position: [0, 0.25, 3.6], fov: 42 }} gl={{ antialias: true }}>
+      <Canvas
+        className="!absolute inset-0 h-full w-full"
+        style={{ touchAction: "none" }}
+        dpr={[1, 1.5]}
+        camera={{ position: [0, 0.15, 4.35], fov: 36, near: 0.1, far: 50 }}
+        gl={{ antialias: true, alpha: true }}
+      >
         <Suspense fallback={null}>
           <color attach="background" args={[data.gradientTo]} />
           <CursorTilt>
@@ -245,7 +251,7 @@ export function PlanetHero({
           </CursorTilt>
           <ScrollZoom scrollRef={scrollRef} />
           <EffectComposer multisampling={0}>
-            <Bloom intensity={1.1} luminanceThreshold={0.42} mipmapBlur />
+            <Bloom intensity={0.85} luminanceThreshold={0.48} mipmapBlur />
             <Vignette offset={0.3} darkness={0.55} />
             <SMAA />
           </EffectComposer>

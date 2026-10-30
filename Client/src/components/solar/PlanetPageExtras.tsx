@@ -127,52 +127,76 @@ export function SizeCompare({ data }: { data: PlanetData }) {
 }
 
 export function OrbitMiniDiagram({ data }: { data: PlanetData }) {
+  // viewBox keeps outermost orbit (order 8) fully inside with padding
+  const vb = 200;
+  const cx = 100;
+  const cy = 100;
+  const maxOrbit = 88; // leave margin for planet dots
+
   return (
     <motion.section
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="mt-8 overflow-hidden rounded-3xl border border-white/10 bg-black/40 p-6 backdrop-blur-md md:p-8"
+      className="mt-8 overflow-hidden rounded-3xl border border-white/10 bg-black/40 p-5 backdrop-blur-md md:p-8"
     >
       <h2 className="display-font text-[22px] font-semibold text-white">Orbit sketch</h2>
       <p className="mt-1 text-[13px] text-[#9AA3B5]">Cute relative order around the Sun</p>
-      <div className="relative mx-auto mt-6 aspect-square max-w-sm">
-        <div className="absolute left-1/2 top-1/2 z-10 h-6 w-6 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#ffb347] shadow-[0_0_30px_#ff9a3c]" />
-        {PLANETS.map((p) => {
-          const r = 18 + p.order * 9;
-          const active = p.slug === data.slug;
-          const dur = 7 + p.order * 2.2;
-          return (
-            <div key={p.slug} className="absolute inset-0">
-              <div
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border"
-                style={{
-                  width: r * 2 + "%",
-                  height: r * 2 + "%",
-                  borderColor: active ? data.accent + "99" : "rgba(255,255,255,0.08)",
-                }}
-              />
-              <div
-                className="absolute left-1/2 top-1/2"
-                style={{
-                  width: r * 2 + "%",
-                  height: r * 2 + "%",
-                  marginLeft: -r + "%",
-                  marginTop: -r + "%",
-                  animation: "orbit-spin " + dur + "s linear infinite",
-                }}
-              >
-                <div
-                  className="absolute left-1/2 top-0 h-2.5 w-2.5 -translate-x-1/2 rounded-full"
-                  style={{
-                    background: active ? data.accent : "#777",
-                    boxShadow: active ? "0 0 12px " + data.accent : undefined,
-                  }}
+      <div className="relative mx-auto mt-5 w-full max-w-[280px] overflow-hidden sm:max-w-sm">
+        <svg
+          viewBox={`0 0 ${vb} ${vb}`}
+          className="block h-auto w-full overflow-hidden"
+          role="img"
+          aria-label="Solar system orbit sketch"
+        >
+          <circle cx={cx} cy={cy} r={6} fill="#ffb347">
+            <animate attributeName="opacity" values="0.85;1;0.85" dur="2.4s" repeatCount="indefinite" />
+          </circle>
+          <circle cx={cx} cy={cy} r={10} fill="none" stroke="#ff9a3c55" strokeWidth="1" />
+          {PLANETS.map((p) => {
+            const r = 18 + ((p.order - 1) / 7) * (maxOrbit - 18);
+            const active = p.slug === data.slug;
+            const dur = 6 + p.order * 1.8;
+            const startAngle = (p.order * 37) % 360;
+            return (
+              <g key={p.slug}>
+                <circle
+                  cx={cx}
+                  cy={cy}
+                  r={r}
+                  fill="none"
+                  stroke={active ? data.accent + "99" : "rgba(255,255,255,0.1)"}
+                  strokeWidth={active ? 1.25 : 0.75}
                 />
-              </div>
-            </div>
-          );
-        })}
+                <g>
+                  <animateTransform
+                    attributeName="transform"
+                    type="rotate"
+                    from={`${startAngle} ${cx} ${cy}`}
+                    to={`${startAngle + 360} ${cx} ${cy}`}
+                    dur={`${dur}s`}
+                    repeatCount="indefinite"
+                  />
+                  <circle
+                    cx={cx}
+                    cy={cy - r}
+                    r={active ? 3.2 : 2}
+                    fill={active ? data.accent : "#888"}
+                  >
+                    {active && (
+                      <animate
+                        attributeName="r"
+                        values="2.6;3.6;2.6"
+                        dur="1.8s"
+                        repeatCount="indefinite"
+                      />
+                    )}
+                  </circle>
+                </g>
+              </g>
+            );
+          })}
+        </svg>
       </div>
     </motion.section>
   );
