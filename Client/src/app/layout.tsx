@@ -26,14 +26,14 @@ const code = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "KODE / LUMEN Labs — Immersive 3D Studio",
-    template: "%s · KODE / LUMEN Labs",
+    default: "LUMEN — Origin | Immersive 3D Experience",
+    template: "%s · LUMEN",
   },
   description:
-    "Enter the work. Portfolio-grade immersive WebGL studio experiences by KODE / LUMEN Labs.",
+    "A cinematic scroll journey through the birth of light — Void, Spark, Ignition, Nebula, Crystal, Awakening. By LUMEN Labs.",
   openGraph: {
-    title: "KODE / LUMEN Labs",
-    description: "Immersive 3D studio site — navigable atriums and project dioramas.",
+    title: "LUMEN — Origin",
+    description: "Scroll-driven WebGL narrative: the origin of light.",
     type: "website",
   },
 };
@@ -42,10 +42,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      data-scroll-behavior="smooth"
       className={`${display.variable} ${body.variable} ${code.variable} h-full antialiased`}
     >
-      <body className="relative min-h-full overflow-x-hidden bg-[#050508] text-[14px] text-[#F3F4F7]">
+      <body className="relative min-h-full overflow-x-hidden bg-[#03040a] text-[14px] text-[#F3F4F7]">
         <Suspense
           fallback={
             <div className="flex min-h-screen items-center justify-center text-[14px] text-[#9AA3B5]">
