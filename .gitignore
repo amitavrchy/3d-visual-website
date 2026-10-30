@@ -13,3 +13,6 @@ __pycache__/
 
 shots/
 
+
+# Local Netlify folder
+.netlify
