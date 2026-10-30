@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500" fill="none">
+  <rect width="800" height="500" fill="#0F1118"/>
+  <circle cx="400" cy="240" r="90" stroke="#4AF2C8" stroke-width="3"/>
+  <circle cx="400" cy="240" r="40" fill="#6B8CFF"/>
+  <text x="40" y="460" fill="#9AA3B5" font-family="monospace" font-size="18">SIGNAL ATRIUM</text>
+</svg>

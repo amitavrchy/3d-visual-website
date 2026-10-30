@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500" fill="none">
+  <rect width="800" height="500" fill="#0F1118"/>
+  <rect x="280" y="120" width="240" height="260" stroke="#FF5C7A" stroke-width="3"/>
+  <rect x="320" y="160" width="160" height="180" fill="#4AF2C833"/>
+  <text x="40" y="460" fill="#9AA3B5" font-family="monospace" font-size="18">VAST THRESHOLD</text>
+</svg>
