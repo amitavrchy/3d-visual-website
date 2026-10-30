@@ -1,14 +1,19 @@
-"use client";
+﻿"use client";
 
-import { useTexture } from "@react-three/drei";
 import { BackSide } from "three";
+import { useProgressiveTexture } from "@/hooks/useProgressiveTexture";
 
 export function Starfield() {
-  const map = useTexture("/textures/sky/2k_stars_milky_way.jpg");
+  const map = useProgressiveTexture("/textures/sky/2k_stars_milky_way.webp", { preview: null });
   return (
     <mesh>
-      <sphereGeometry args={[90, 64, 64]} />
-      <meshBasicMaterial map={map} side={BackSide} depthWrite={false} />
+      <sphereGeometry args={[90, 32, 32]} />
+      <meshBasicMaterial
+        map={map ?? undefined}
+        color={map ? "#ffffff" : "#07071a"}
+        side={BackSide}
+        depthWrite={false}
+      />
     </mesh>
   );
 }

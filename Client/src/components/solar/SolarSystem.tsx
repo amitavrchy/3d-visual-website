@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { PLANETS } from "@/lib/planets";
 import { AsteroidBelt } from "./AsteroidBelt";
 import { CameraController } from "./CameraController";
@@ -13,6 +13,7 @@ import { useAppSelector } from "@/store/hooks";
 
 export function SolarSystem() {
   const hovered = useAppSelector((s) => s.solar.hovered);
+  const [heavy, setHeavy] = useState(false);
   const angles = useMemo(() => {
     const map: Record<string, React.MutableRefObject<number>> = {};
     for (const p of PLANETS) {
@@ -21,8 +22,29 @@ export function SolarSystem() {
     return map;
   }, []);
 
-  // Keep stable refs for each planet
   const angleRefs = useRef(angles);
+
+  useEffect(() => {
+    let cancelled = false;
+    const arm = () => {
+      if (!cancelled) setHeavy(true);
+    };
+    const ric = (window as Window & { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number }).requestIdleCallback;
+    let id: number;
+    if (typeof ric === "function") {
+      id = ric(arm, { timeout: 900 });
+    } else {
+      id = window.setTimeout(arm, 350) as unknown as number;
+    }
+    return () => {
+      cancelled = true;
+      if (typeof ric === "function" && "cancelIdleCallback" in window) {
+        (window as Window & { cancelIdleCallback: (n: number) => void }).cancelIdleCallback(id);
+      } else {
+        clearTimeout(id);
+      }
+    };
+  }, []);
 
   return (
     <>
@@ -37,9 +59,9 @@ export function SolarSystem() {
       {PLANETS.map((p) => (
         <PlanetBody key={p.slug} data={p} angleRef={angleRefs.current[p.slug]!} />
       ))}
-      <AsteroidBelt />
+      {heavy && <AsteroidBelt />}
       <CameraController angles={angleRefs.current} />
-      <SolarEffects />
+      {heavy && <SolarEffects />}
     </>
   );
 }

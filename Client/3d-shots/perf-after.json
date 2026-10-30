@@ -1,0 +1,140 @@
+{
+  "wallDclMs": 1635,
+  "canvasVisibleMs": 2719,
+  "trackedTextureCount": 23,
+  "trackedTextureMB": 0.276,
+  "textures": [
+    {
+      "url": "planets/2k_earth_clouds.webp",
+      "status": 200,
+      "bytes": 101576,
+      "t": 1793350888882,
+      "kb": 99.2,
+      "atMs": 3633
+    },
+    {
+      "url": "planets/2k_earth_daymap.webp",
+      "status": 200,
+      "bytes": 31736,
+      "t": 1793350889216,
+      "kb": 31,
+      "atMs": 3967
+    },
+    {
+      "url": "sky/2k_stars_milky_way.webp",
+      "status": 200,
+      "bytes": 27604,
+      "t": 1793350888879,
+      "kb": 27,
+      "atMs": 3630
+    },
+    {
+      "url": "planets/2k_jupiter.webp",
+      "status": 200,
+      "bytes": 26594,
+      "t": 1793350889218,
+      "kb": 26,
+      "atMs": 3969
+    },
+    {
+      "url": "planets/2k_moon.webp",
+      "status": 200,
+      "bytes": 22084,
+      "t": 1793350888879,
+      "kb": 21.6,
+      "atMs": 3630
+    },
+    {
+      "url": "planets/2k_sun.webp",
+      "status": 200,
+      "bytes": 18040,
+      "t": 1793350887433,
+      "kb": 17.6,
+      "atMs": 2184
+    },
+    {
+      "url": "planets/2k_sun.webp",
+      "status": 200,
+      "bytes": 18040,
+      "t": 1793350888882,
+      "kb": 17.6,
+      "atMs": 3633
+    },
+    {
+      "url": "planets/2k_venus_atmosphere.webp",
+      "status": 200,
+      "bytes": 9060,
+      "t": 1793350889218,
+      "kb": 8.8,
+      "atMs": 3969
+    },
+    {
+      "url": "planets/2k_saturn.webp",
+      "status": 200,
+      "bytes": 6324,
+      "t": 1793350889218,
+      "kb": 6.2,
+      "atMs": 3969
+    },
+    {
+      "url": "planets/2k_neptune.webp",
+      "status": 200,
+      "bytes": 4182,
+      "t": 1793350889218,
+      "kb": 4.1,
+      "atMs": 3969
+    },
+    {
+      "url": "preview/2k_earth_daymap.webp",
+      "status": 200,
+      "bytes": 3528,
+      "t": 1793350887412,
+      "kb": 3.4,
+      "atMs": 2163
+    },
+    {
+      "url": "preview/2k_earth_daymap.webp",
+      "status": 200,
+      "bytes": 3528,
+      "t": 1793350888802,
+      "kb": 3.4,
+      "atMs": 3553
+    },
+    {
+      "url": "preview/2k_mars.webp",
+      "status": 200,
+      "bytes": 3364,
+      "t": 1793350888879,
+      "kb": 3.3,
+      "atMs": 3630
+    },
+    {
+      "url": "preview/2k_mercury.webp",
+      "status": 200,
+      "bytes": 3170,
+      "t": 1793350888879,
+      "kb": 3.1,
+      "atMs": 3630
+    },
+    {
+      "url": "planets/2k_saturn_ring_alpha.webp",
+      "status": 200,
+      "bytes": 2202,
+      "t": 1793350888879,
+      "kb": 2.2,
+      "atMs": 3630
+    }
+  ],
+  "perf": {
+    "dcl": 1625,
+    "load": 1816,
+    "transferSize": 4309,
+    "texCount": 25,
+    "texBytes": 378364,
+    "texDecoded": 394232,
+    "firstTex": 2148,
+    "lastTex": 4079,
+    "jsBytes": 599330,
+    "jsCount": 21
+  }
+}

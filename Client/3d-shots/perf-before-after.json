@@ -1,0 +1,24 @@
+﻿{
+  "before": {
+    "textureAssetsMB": 5.63,
+    "textureFiles": 13,
+    "canvasVisibleMs_agent": 6300,
+    "dclMs_agent": 6200,
+    "texturesArriveMs_agent": 7000,
+    "cacheControl": "public,max-age=0,must-revalidate",
+    "userReport": "~2 minutes until solar system appears"
+  },
+  "after": {
+    "textureAssetsMB": 0.35,
+    "webpPlusPreviewMB": 0.35,
+    "trackedTextureMB_live": 0.276,
+    "canvasVisibleMs_agent": 2719,
+    "dclMs_agent": 1635,
+    "loadEventMs": 1816,
+    "firstTexMs": 2148,
+    "lastTexMs": 4079,
+    "jsBundleTransferBytes": 599330,
+    "cacheControl": "public,max-age=31536000,immutable",
+    "favicon": ["src/app/icon.svg", "src/app/favicon.ico", "src/app/apple-icon.png"]
+  }
+}
