@@ -1,7 +1,7 @@
 "use client";
 
-import { OriginExperience } from "@/components/origin/OriginExperience";
+import { SolarExperience } from "@/components/solar/SolarExperience";
 
 export default function HomePage() {
-  return <OriginExperience />;
+  return <SolarExperience />;
 }

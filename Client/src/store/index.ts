@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "@/features/auth/authSlice";
 import sceneUiReducer from "@/features/sceneUi/sceneUiSlice";
+import solarReducer from "@/features/solar/solarSlice";
 
 export const makeStore = () =>
   configureStore({
     reducer: {
       sceneUi: sceneUiReducer,
       auth: authReducer,
+      solar: solarReducer,
     },
     devTools: process.env.NODE_ENV === "development",
   });

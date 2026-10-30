@@ -1,78 +1,64 @@
-# 3D Visual Website — LUMEN Origin (Agent-Ready Spec)
+# 3D Visual Website -- ORBIT / Solar System (Agent-Ready Spec)
 
-> Stack: Next.js + Redux Toolkit + RQ + RHF/zod + framer-motion + **three, @react-three/fiber, @react-three/drei, @react-three/postprocessing, gsap, lenis**. NestJS + Prisma 6 + JWT.
+> Stack: Next.js 16 + Redux Toolkit + RQ + framer-motion + **three, @react-three/fiber, @react-three/drei, @react-three/postprocessing**. NestJS + Prisma 6 + JWT (API unchanged).
 
 ---
 
 ## 1. Vision & Audience
 
-**Vision:** A portfolio-grade **cinematic scroll WebGL experience** for fictional studio **LUMEN Labs** titled **Origin** — the birth of light as a metaphor for creative work becoming form. One coherent narrative drives every visual.
+**Vision:** A portfolio-grade **fully animated 3D solar system** homepage. Hover planets for labels, click to fly the camera in, then land on dedicated planet pages with rotating 3D heroes and NASA-style facts.
 
-**Audience:** Creative directors; Awwwards/FWA jurors; 3D/web engineers; brand clients.
+**Audience:** Creative directors; Awwwards/FWA jurors; 3D/web engineers; educators; brand clients.
 
-**Promise:** "Scroll the birth of light. Leave with meaning."
+**Promise:** "Explore the solar system in the browser. Leave with wonder."
 
-**References (techniques stolen):**
-| Site | Steal |
-|------|-------|
-| Igloo Inc (Awwwards SOTY 2024) | Cinematic camera journey through one continuous world |
-| Lusion v3 | Scroll-forward 3D picture; cursor-reactive beauty |
-| Pioneer / Persepolis | Unbroken scroll-driven camera path with chapter meaning |
-| Active Theory / Prometheus | Chapter narrative + interactive scroll moments |
-| Bruno Simon | Memorable singular concept, not generic shapes |
+**Texture credit:** Solar System Scope textures (www.solarsystemscope.com/textures), CC-BY 4.0. Facts referenced from NASA planetary fact sheets.
 
 ---
 
-## 2. Concept — LUMEN Origin
+## 2. Concept -- ORBIT / Solar
 
-A single photon of intention travels from **void → spark → ignition → nebula → crystal → awakening**. Typography and camera chapters are inseparable from the shaders they reveal. This is not a decorative blob farm; every scene answers "what does creation feel like?"
+Home is a live WebGL solar system:
+- **Sun** -- animated surface noise shader, corona glow, bloom, point lights
+- **8 planets** -- Mercury through Neptune with real map textures, continuous orbits + axial spin
+- **Earth** -- cloud layer + atmosphere glow + Moon
+- **Saturn** -- ring mesh with alpha texture
+- **Asteroid belt** -- ~900 instanced dodecahedra between Mars and Jupiter
+- **Sky** -- milky-way starfield sphere
+- **Interaction** -- hover highlight + HTML label; click triggers smooth camera fly-to then navigates to `/planets/[slug]`
 
-### Chapters
-| # | Id | Visual | Copy intent |
-|---|----|--------|-------------|
-| 01 | void | Sparse drifting starfield, deep fog | Before form, waiting |
-| 02 | spark | Noise-displaced iridescent icosahedron | A single intention |
-| 03 | ignition | Bloom peak + additive light rays | Light finds direction |
-| 04 | nebula | GPU spiral galaxy particles | Matter gathers |
-| 05 | crystal | Metallic octahedra crystallize | Pattern becomes structure |
-| 06 | awakening | Soft core + CTA | Creation begins with you |
-
----
-
-## 3. Design System
-
-| Token | Hex |
-|-------|-----|
-| `--abyss` | `#03040a` |
-| `--panel` | `#0F1118` |
-| `--text` | `#F3F4F7` |
-| `--muted` | `#9AA3B5` |
-| `--signal` | `#4AF2C8` |
-| `--hot` | `#FF5C7A` |
-| `--cool` | `#6B8CFF` |
-
-- Display: Space Grotesk · Body: Inter · Labels: JetBrains Mono
-- Post: Bloom + ChromaticAberration + Noise + Vignette (quality-gated)
-- Scroll: Lenis + GSAP ticker; mutable `scrollState` for 60fps R3F
-- Camera: keyframed path + mouse parallax damp
-- Loader: branded progress bar before experience unlocks
-- Quality Low/Med/High via Redux `sceneUiSlice` (dpr clamp)
+Each planet page:
+- Rotating 3D hero (same textures / rings / clouds)
+- Stats: diameter, distance (AU), day/year length, moons, temperature
+- Scroll-animated fact sections (framer-motion)
+- Nav menu of all planets + previous / next + back to system
 
 ---
 
-## 4. Sitemap
+## 3. Tech notes
 
-### `/` — Origin experience (primary)
-Fixed WebGL canvas + 600vh scroll chapters + overlay UI + intro loader.
-
-### `/work`, `/work/[slug]`, `/playground`, `/about`, `/contact`, `/admin`
-Existing studio pages remain for case studies / lab / contact.
+| Concern | Choice |
+|---------|--------|
+| State | Redux Toolkit only (`solarSlice`: hovered, focus, flying, paused) -- no zustand |
+| Post | `@react-three/postprocessing` Bloom + Vignette + SMAA |
+| Perf | `dpr={[1, 1.75]}`, instanced asteroids, frustumCulled false only where needed |
+| Routing | App Router: `/` solar home, `/planets/[slug]` x8 |
+| Brand | ORBIT / Solar (replaces LUMEN Origin) |
 
 ---
 
-## 5. Implementation notes for agents
+## 4. Key paths (Client)
 
-- Custom GLSL: `IridescentBlob`, `GalaxyField`, `VoidParticles`
-- Do **not** use zustand — Redux for UI; module `scrollState` for scroll progress
-- `npm run build` must pass; keep dpr ≤ 2; hide heavy effects on `quality === "low"`
-- Author commits as amitavrchy (`155712340+amitavrchy@users.noreply.github.com`)
+- `src/components/solar/*` -- scene, sun, planets, belt, HUD, canvas, camera fly, planet hero
+- `src/lib/planets.ts` -- data + facts + texture paths + credit
+- `src/features/solar/solarSlice.ts`
+- `public/textures/planets/*`, `public/textures/sky/*`
+
+---
+
+## 5. Out of scope / removed
+
+- LUMEN Origin scroll chapters, crystal/galaxy shaders, Lenis-driven camera narrative (deleted)
+- Zustand (never used)
+
+API / Nest / Prisma remain as secondary CMS for other portfolio routes if present.

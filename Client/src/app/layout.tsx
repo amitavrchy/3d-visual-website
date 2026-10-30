@@ -26,14 +26,14 @@ const code = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "LUMEN — Origin | Immersive 3D Experience",
-    template: "%s · LUMEN",
+    default: "ORBIT / Solar System | Immersive 3D",
+    template: "%s | ORBIT",
   },
   description:
-    "A cinematic scroll journey through the birth of light — Void, Spark, Ignition, Nebula, Crystal, Awakening. By LUMEN Labs.",
+    "A fully animated 3D solar system with NASA-style planet pages. Hover, click, and fly between worlds.",
   openGraph: {
-    title: "LUMEN — Origin",
-    description: "Scroll-driven WebGL narrative: the origin of light.",
+    title: "ORBIT / Solar System",
+    description: "Explore an animated WebGL solar system and dedicated planet pages.",
     type: "website",
   },
 };
@@ -48,7 +48,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Suspense
           fallback={
             <div className="flex min-h-screen items-center justify-center text-[14px] text-[#9AA3B5]">
-              Loading…
+              Loading...
             </div>
           }
         >

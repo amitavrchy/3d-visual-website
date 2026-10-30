@@ -2,14 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { PLANETS } from "@/lib/planets";
 
 export function SiteFooter() {
   const pathname = usePathname();
-  if (
-    pathname === "/" ||
-    pathname.startsWith("/playground") ||
-    pathname.startsWith("/lab")
-  ) {
+  if (pathname === "/") {
     return null;
   }
 
@@ -18,33 +15,25 @@ export function SiteFooter() {
       <div className="mx-auto flex max-w-6xl flex-col gap-8 md:flex-row md:items-start md:justify-between">
         <div>
           <p className="display-font text-[22px] text-[#F3F4F7]">
-            KODE <span className="text-[#4AF2C8]">/</span> LUMEN
+            ORBIT <span className="text-[#4AF2C8]">/</span> Solar
           </p>
           <p className="mt-2 max-w-sm text-[15px] leading-relaxed">
-            Immersive product studio. WebGL as the medium — clarity as the
-            contract.
+            An animated WebGL solar system with dedicated planet pages and NASA-style facts.
           </p>
         </div>
-        <div className="flex flex-wrap gap-x-8 gap-y-3">
-          <Link href="/work" className="hover:text-[#4AF2C8]">
-            Work
+        <div className="flex flex-wrap gap-x-6 gap-y-3">
+          <Link href="/" className="hover:text-[#4AF2C8]">
+            System
           </Link>
-          <Link href="/playground" className="hover:text-[#4AF2C8]">
-            Lab
-          </Link>
-          <Link href="/about" className="hover:text-[#4AF2C8]">
-            Studio
-          </Link>
-          <Link href="/contact" className="hover:text-[#4AF2C8]">
-            Brief
-          </Link>
-          <Link href="/admin" className="hover:text-[#4AF2C8]">
-            Admin
-          </Link>
+          {PLANETS.map((p) => (
+            <Link key={p.slug} href={`/planets/${p.slug}`} className="hover:text-[#4AF2C8]">
+              {p.name}
+            </Link>
+          ))}
         </div>
       </div>
-      <p className="mx-auto mt-10 max-w-6xl text-[14px] text-[#22263A]">
-        © {new Date().getFullYear()} KODE / LUMEN Labs — portfolio demo product
+      <p className="mx-auto mt-10 max-w-6xl text-[13px] text-[#5a6178]">
+        (c) {new Date().getFullYear()} ORBIT / Solar -- textures CC-BY Solar System Scope
       </p>
     </footer>
   );
