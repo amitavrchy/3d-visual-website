@@ -5,6 +5,7 @@ import { AppProviders } from "@/components/providers/AppProviders";
 import { SiteFooter } from "@/components/ui/SiteFooter";
 import { SiteHeader } from "@/components/ui/SiteHeader";
 import { ReducedMotionGate } from "@/components/ui/ReducedMotionGate";
+import { TransitionOverlay } from "@/components/solar/TransitionOverlay";
 import "./globals.css";
 
 const display = Space_Grotesk({
@@ -58,6 +59,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 Skip to content
               </a>
               <SiteHeader />
+              <TransitionOverlay />
               <main id="main" className="relative min-h-screen">
                 {children}
               </main>

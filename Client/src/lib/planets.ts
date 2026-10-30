@@ -27,6 +27,13 @@ export type PlanetData = {
   moons: string;
   temperature: string;
   facts: string[];
+  /** Diameter relative to Earth (Earth = 1) */
+  sizeVsEarth: number;
+  /** Approximate moon count for visuals */
+  moonCount: number;
+  cuteBubble: string;
+  gradientFrom: string;
+  gradientTo: string;
 };
 
 export const PLANETS: PlanetData[] = [
@@ -53,6 +60,11 @@ export const PLANETS: PlanetData[] = [
       "A year on Mercury is shorter than its own day.",
       "Its surface is covered in ancient impact basins like Caloris.",
     ],
+    sizeVsEarth: 0.38,
+    moonCount: 0,
+    cuteBubble: "Speedy little rock!",
+    gradientFrom: "#1a1a1e",
+    gradientTo: "#050508",
   },
   {
     slug: "venus",
@@ -77,6 +89,11 @@ export const PLANETS: PlanetData[] = [
       "Its thick CO2 atmosphere creates crushing surface pressure.",
       "A day on Venus lasts longer than its year.",
     ],
+    sizeVsEarth: 0.95,
+    moonCount: 0,
+    cuteBubble: "Hot, cloudy, and backwards!",
+    gradientFrom: "#2a1f12",
+    gradientTo: "#050508",
   },
   {
     slug: "earth",
@@ -101,6 +118,11 @@ export const PLANETS: PlanetData[] = [
       "About 71% of the surface is covered by water.",
       "The Moon stabilizes Earth's axial tilt and drives tides.",
     ],
+    sizeVsEarth: 1,
+    moonCount: 1,
+    cuteBubble: "Home sweet home!",
+    gradientFrom: "#0a1f1a",
+    gradientTo: "#050508",
   },
   {
     slug: "mars",
@@ -125,6 +147,11 @@ export const PLANETS: PlanetData[] = [
       "Mars has seasons similar to Earth due to its axial tilt.",
       "Evidence suggests liquid water once flowed on the surface.",
     ],
+    sizeVsEarth: 0.53,
+    moonCount: 2,
+    cuteBubble: "Rusty and adventurous!",
+    gradientFrom: "#2a1210",
+    gradientTo: "#050508",
   },
   {
     slug: "jupiter",
@@ -149,6 +176,11 @@ export const PLANETS: PlanetData[] = [
       "Jupiter is mostly hydrogen and helium.",
       "Its magnetic field is the strongest of any planet.",
     ],
+    sizeVsEarth: 11.2,
+    moonCount: 8,
+    cuteBubble: "King of the storms!",
+    gradientFrom: "#2a1e12",
+    gradientTo: "#050508",
   },
   {
     slug: "saturn",
@@ -173,6 +205,11 @@ export const PLANETS: PlanetData[] = [
       "It is less dense than water -- it would float in a giant bathtub.",
       "Titan, its largest moon, has lakes of liquid methane.",
     ],
+    sizeVsEarth: 9.45,
+    moonCount: 6,
+    cuteBubble: "Look at those rings!",
+    gradientFrom: "#2a2414",
+    gradientTo: "#050508",
   },
   {
     slug: "uranus",
@@ -197,6 +234,11 @@ export const PLANETS: PlanetData[] = [
       "Methane in the atmosphere gives it a blue-green color.",
       "It has faint rings discovered in 1977.",
     ],
+    sizeVsEarth: 4,
+    moonCount: 4,
+    cuteBubble: "Tipped over ice giant!",
+    gradientFrom: "#0e1e28",
+    gradientTo: "#050508",
   },
   {
     slug: "neptune",
@@ -221,6 +263,11 @@ export const PLANETS: PlanetData[] = [
       "It was the first planet found by mathematical prediction.",
       "Triton orbits backwards and may be a captured Kuiper Belt object.",
     ],
+    sizeVsEarth: 3.88,
+    moonCount: 4,
+    cuteBubble: "Windiest world ever!",
+    gradientFrom: "#0c1430",
+    gradientTo: "#050508",
   },
 ];
 

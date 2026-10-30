@@ -2,7 +2,6 @@
 
 import { Html, useTexture } from "@react-three/drei";
 import { ThreeEvent, useFrame } from "@react-three/fiber";
-import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import {
   AdditiveBlending,
@@ -14,7 +13,7 @@ import {
 } from "three";
 import type { PlanetData } from "@/lib/planets";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setFlying, setFocus, setHovered } from "@/features/solar/solarSlice";
+import { setHovered, startFlyTo } from "@/features/solar/solarSlice";
 
 type PlanetBodyProps = {
   data: PlanetData;
@@ -81,16 +80,16 @@ function SaturnRings({ size }: { size: number }) {
 }
 
 export function PlanetBody({ data, angleRef }: PlanetBodyProps) {
-  const router = useRouter();
   const dispatch = useAppDispatch();
   const hovered = useAppSelector((s) => s.solar.hovered);
   const paused = useAppSelector((s) => s.solar.paused);
-  const flying = useAppSelector((s) => s.solar.flying);
+  const phase = useAppSelector((s) => s.solar.phase);
   const group = useRef<Group>(null);
   const planet = useRef<Mesh>(null);
   const highlight = useRef<Mesh>(null);
   const map = useTexture(data.texture);
   const isHovered = hovered === data.slug;
+  const busy = phase !== "idle";
 
   useFrame((_, delta) => {
     if (!paused) {
@@ -107,14 +106,15 @@ export function PlanetBody({ data, angleRef }: PlanetBodyProps) {
     }
     if (highlight.current) {
       const mat = highlight.current.material as { opacity: number };
-      mat.opacity = MathUtils.damp(mat.opacity, isHovered ? 0.4 : 0, 8, delta);
-      const s = MathUtils.damp(highlight.current.scale.x, isHovered ? 1.2 : 1.05, 8, delta);
+      mat.opacity = MathUtils.damp(mat.opacity, isHovered && !busy ? 0.4 : 0, 8, delta);
+      const s = MathUtils.damp(highlight.current.scale.x, isHovered && !busy ? 1.2 : 1.05, 8, delta);
       highlight.current.scale.setScalar(s);
     }
   });
 
   const onPointerOver = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation();
+    if (busy) return;
     document.body.style.cursor = "pointer";
     dispatch(setHovered(data.slug));
   };
@@ -124,12 +124,8 @@ export function PlanetBody({ data, angleRef }: PlanetBodyProps) {
   };
   const onClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
-    if (flying) return;
-    dispatch(setFocus(data.slug));
-    dispatch(setFlying(true));
-    window.setTimeout(() => {
-      router.push(`/planets/${data.slug}`);
-    }, 1450);
+    if (busy) return;
+    dispatch(startFlyTo({ slug: data.slug, color: data.accent }));
   };
 
   return (
@@ -169,7 +165,7 @@ export function PlanetBody({ data, angleRef }: PlanetBodyProps) {
         </mesh>
       </group>
 
-      {isHovered && (
+      {isHovered && !busy && (
         <Html distanceFactor={14} position={[0, data.size + 0.55, 0]} center zIndexRange={[40, 0]}>
           <div className="pointer-events-none rounded-md border border-white/15 bg-[#050508]/80 px-3 py-1.5 backdrop-blur-sm">
             <p className="mono-label text-[10px] tracking-[0.18em] text-[#4AF2C8]">
