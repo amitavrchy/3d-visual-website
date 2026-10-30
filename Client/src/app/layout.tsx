@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import { Suspense } from "react";
 import { AppProviders } from "@/components/providers/AppProviders";
+import { SiteFooter } from "@/components/ui/SiteFooter";
 import { SiteHeader } from "@/components/ui/SiteHeader";
 import { ReducedMotionGate } from "@/components/ui/ReducedMotionGate";
 import "./globals.css";
@@ -60,6 +61,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <main id="main" className="relative min-h-screen">
                 {children}
               </main>
+              <SiteFooter />
             </ReducedMotionGate>
           </AppProviders>
         </Suspense>

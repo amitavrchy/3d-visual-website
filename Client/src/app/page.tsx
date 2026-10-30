@@ -6,6 +6,7 @@ import { Atrium } from "@/components/canvas/scenes/Atrium";
 import { DynamicCanvas } from "@/components/canvas/DynamicCanvas";
 import { HeroOverlay } from "@/components/ui/HeroOverlay";
 import { QualityPanel } from "@/components/ui/QualityPanel";
+import { useHotspotKeyboard } from "@/hooks/useHotspotKeyboard";
 import { useAppSelector } from "@/store/hooks";
 
 const DevLeva =
@@ -17,6 +18,7 @@ const DevLeva =
 
 export default function HomePage() {
   const prefer2d = useAppSelector((s) => s.sceneUi.prefer2d);
+  useHotspotKeyboard(!prefer2d);
 
   if (prefer2d) {
     return (
