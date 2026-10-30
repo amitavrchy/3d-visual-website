@@ -95,3 +95,26 @@ a {
 .skip-link:focus {
   top: 1rem;
 }
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Immersive pages: kill accidental overscroll bounce */
+.immersive-lock {
+  overscroll-behavior: none;
+  touch-action: none;
+}

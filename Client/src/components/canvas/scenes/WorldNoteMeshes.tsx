@@ -1,10 +1,11 @@
 "use client";
 
-import { Float, Html } from "@react-three/drei";
+import { Float } from "@react-three/drei";
 import { useQuery } from "@tanstack/react-query";
 import { fetchWorldNotes } from "@/lib/api";
 import { FALLBACK_NOTES } from "@/lib/fallback-data";
 
+/** Colored floating chips in the atrium — labels live in the HTML contact flow. */
 export function WorldNoteMeshes() {
   const { data: notes = FALLBACK_NOTES } = useQuery({
     queryKey: ["world-notes"],
@@ -19,32 +20,28 @@ export function WorldNoteMeshes() {
 
   return (
     <group>
-      {notes.map((note) => (
+      {notes.slice(0, 8).map((note) => (
         <Float
           key={note.id}
-          speed={1.1}
-          floatIntensity={0.5}
+          speed={1}
+          floatIntensity={0.4}
           rotationIntensity={0.2}
           position={[note.x, note.y, note.z]}
         >
           <mesh>
-            <boxGeometry args={[0.35, 0.22, 0.04]} />
+            <boxGeometry args={[0.32, 0.2, 0.04]} />
             <meshStandardMaterial
               color={note.color}
               emissive={note.color}
-              emissiveIntensity={0.4}
-              metalness={0.2}
+              emissiveIntensity={0.45}
+              metalness={0.25}
               roughness={0.4}
             />
           </mesh>
-          <Html distanceFactor={7} position={[0, 0.28, 0]} center>
-            <div className="max-w-[180px] rounded bg-[#0F1118]/92 px-2 py-1 text-[14px] text-[#F3F4F7]">
-              <p className="mono-label mb-1 text-[14px] text-[#4AF2C8]">
-                {note.author}
-              </p>
-              <p className="leading-snug">{note.message}</p>
-            </div>
-          </Html>
+          <mesh position={[0, 0, 0.025]}>
+            <planeGeometry args={[0.26, 0.08]} />
+            <meshBasicMaterial color="#050508" transparent opacity={0.45} />
+          </mesh>
         </Float>
       ))}
     </group>

@@ -1,26 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useRef } from "react";
 import { Provider } from "react-redux";
 import { hydrateAuth } from "@/features/auth/authSlice";
 import { makeStore, type AppStore } from "@/store";
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
-  const [store, setStore] = useState<AppStore | null>(null);
-
-  useEffect(() => {
-    const next = makeStore();
-    next.dispatch(hydrateAuth());
-    setStore(next);
-  }, []);
-
-  if (!store) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-[#050508] text-[14px] text-[#9AA3B5]">
-        Booting studio…
-      </div>
-    );
+  const storeRef = useRef<AppStore | null>(null);
+  if (!storeRef.current) {
+    storeRef.current = makeStore();
+    if (typeof window !== "undefined") {
+      storeRef.current.dispatch(hydrateAuth());
+    }
   }
-
-  return <Provider store={store}>{children}</Provider>;
+  return <Provider store={storeRef.current}>{children}</Provider>;
 }

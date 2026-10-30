@@ -63,7 +63,7 @@ async function main() {
         diorama: 'orbit',
       },
       gallery: ['/images/projects/orbit-lab-1.jpg'],
-      featured: true,
+      featured: false,
       sortOrder: 2,
       published: true,
     },

@@ -2,16 +2,13 @@
 
 import dynamic from "next/dynamic";
 import type { ComponentProps } from "react";
+import { SceneLoader } from "@/components/ui/SceneLoader";
 
 const AppCanvas = dynamic(
   () => import("./AppCanvas").then((m) => m.AppCanvas),
   {
     ssr: false,
-    loading: () => (
-      <div className="absolute inset-0 flex items-center justify-center bg-[#050508] text-[14px] text-[#9AA3B5]">
-        Loading scene…
-      </div>
-    ),
+    loading: () => <SceneLoader />,
   },
 );
 
