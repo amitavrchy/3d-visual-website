@@ -1,19 +1,17 @@
-﻿"use client";
+"use client";
 
 import { useFrame } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
+import { useTexture } from "@react-three/drei";
+import { useMemo, useRef } from "react";
 import {
   AdditiveBlending,
   BackSide,
   Color,
-  DataTexture,
   Group,
   ShaderMaterial,
   SphereGeometry,
-  SRGBColorSpace,
 } from "three";
 import { SUN } from "@/lib/planets";
-import { useProgressiveTexture } from "@/hooks/useProgressiveTexture";
 
 const coronaVert = /* glsl */ `
 varying vec3 vNormal;
@@ -83,29 +81,17 @@ void main(){
 
 export function Sun() {
   const group = useRef<Group>(null);
-  const map = useProgressiveTexture(SUN.texture);
-  const fallback = useMemo(() => {
-    const data = new Uint8Array([255, 170, 60, 255]);
-    const t = new DataTexture(data, 1, 1);
-    t.colorSpace = SRGBColorSpace;
-    t.needsUpdate = true;
-    return t;
-  }, []);
-
+  const map = useTexture(SUN.texture);
   const surfaceMat = useMemo(() => {
     return new ShaderMaterial({
       uniforms: {
-        uMap: { value: fallback },
+        uMap: { value: map },
         uTime: { value: 0 },
       },
       vertexShader: surfaceVert,
       fragmentShader: surfaceFrag,
     });
-  }, [fallback]);
-
-  useEffect(() => {
-    surfaceMat.uniforms.uMap!.value = map ?? fallback;
-  }, [map, fallback, surfaceMat]);
+  }, [map]);
 
   const coronaMat = useMemo(() => {
     return new ShaderMaterial({
@@ -122,7 +108,7 @@ export function Sun() {
     });
   }, []);
 
-  const geo = useMemo(() => new SphereGeometry(1, 48, 48), []);
+  const geo = useMemo(() => new SphereGeometry(1, 64, 64), []);
 
   useFrame((state, delta) => {
     const t = state.clock.elapsedTime;
@@ -136,7 +122,7 @@ export function Sun() {
       <mesh geometry={geo} material={surfaceMat} scale={SUN.size} />
       <mesh geometry={geo} material={coronaMat} scale={SUN.size * 1.28} />
       <mesh scale={SUN.size * 1.55}>
-        <sphereGeometry args={[1, 24, 24]} />
+        <sphereGeometry args={[1, 32, 32]} />
         <meshBasicMaterial
           color="#ffb347"
           transparent

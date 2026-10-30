@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useProgressiveTexture } from "@/hooks/useProgressiveTexture";
+import { useTexture } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import {
   AdditiveBlending,
@@ -146,17 +146,15 @@ function RotatingPlanet({
   const mesh = useRef<Mesh>(null);
   const clouds = useRef<Mesh>(null);
   const root = useRef<Group>(null);
-  const map = useProgressiveTexture(data.texture);
-  const cloudsMap = useProgressiveTexture(
-    data.slug === "earth" ? "/textures/planets/2k_earth_clouds.webp" : null,
-    { preview: null },
+  const map = useTexture(data.texture);
+  const cloudsMap = useTexture(
+    data.slug === "earth" ? "/textures/planets/2k_earth_clouds.webp" : data.texture,
   );
-  const ringsMap = useProgressiveTexture(
-    data.slug === "saturn" ? "/textures/planets/2k_saturn_ring_alpha.webp" : null,
-    { preview: null },
+  const ringsMap = useTexture(
+    data.slug === "saturn" ? "/textures/planets/2k_saturn_ring_alpha.webp" : data.texture,
   );
-  const cloudTex: Texture | null = data.slug === "earth" ? cloudsMap : null;
-  const ringTex: Texture | null = data.slug === "saturn" ? ringsMap : null;
+  const cloudTex: Texture | undefined = data.slug === "earth" ? cloudsMap : undefined;
+  const ringTex: Texture | undefined = data.slug === "saturn" ? ringsMap : undefined;
   const r = data.slug === "saturn" ? 0.92 : 1.05;
 
   useFrame((_, delta) => {
@@ -176,8 +174,7 @@ function RotatingPlanet({
       <mesh ref={mesh}>
         <sphereGeometry args={[r, 64, 64]} />
         <meshStandardMaterial
-          map={map ?? undefined}
-          color={map ? "#ffffff" : data.accent}
+          map={map}
           roughness={0.68}
           metalness={0.12}
           emissive={data.accent}
@@ -187,7 +184,7 @@ function RotatingPlanet({
       {cloudTex && (
         <mesh ref={clouds} scale={1.02}>
           <sphereGeometry args={[r, 64, 64]} />
-          <meshStandardMaterial map={cloudTex ?? undefined} color={cloudTex ? "#ffffff" : "#cfe8ff"} transparent opacity={0.45} depthWrite={false} />
+          <meshStandardMaterial map={cloudTex} transparent opacity={0.45} depthWrite={false} />
         </mesh>
       )}
       <mesh scale={1.12}>
@@ -205,8 +202,7 @@ function RotatingPlanet({
         <mesh rotation={[Math.PI / 2.3, 0, 0]}>
           <ringGeometry args={[r * 1.35, r * 2.05, 128]} />
           <meshStandardMaterial
-            map={ringTex ?? undefined}
-            color={ringTex ? "#ffffff" : "#c9b896"}
+            map={ringTex}
             transparent
             side={DoubleSide}
             opacity={0.95}

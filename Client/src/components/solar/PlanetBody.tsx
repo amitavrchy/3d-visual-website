@@ -1,6 +1,6 @@
-﻿"use client";
+"use client";
 
-import { Html } from "@react-three/drei";
+import { Html, useTexture } from "@react-three/drei";
 import { ThreeEvent, useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import {
@@ -14,7 +14,6 @@ import {
 import type { PlanetData } from "@/lib/planets";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setHovered, startFlyTo } from "@/features/solar/solarSlice";
-import { useProgressiveTexture } from "@/hooks/useProgressiveTexture";
 
 type PlanetBodyProps = {
   data: PlanetData;
@@ -25,8 +24,8 @@ function EarthExtras({ size, spinSpeed, paused }: { size: number; spinSpeed: num
   const cloudsRef = useRef<Mesh>(null);
   const moonRef = useRef<Group>(null);
   const moonAngle = useRef(Math.random() * Math.PI * 2);
-  const clouds = useProgressiveTexture("/textures/planets/2k_earth_clouds.webp", { preview: null });
-  const moon = useProgressiveTexture("/textures/planets/2k_moon.webp", { preview: null });
+  const clouds = useTexture("/textures/planets/2k_earth_clouds.webp");
+  const moon = useTexture("/textures/planets/2k_moon.webp");
 
   useFrame((_, delta) => {
     if (paused) return;
@@ -45,28 +44,17 @@ function EarthExtras({ size, spinSpeed, paused }: { size: number; spinSpeed: num
   return (
     <>
       <mesh ref={cloudsRef} scale={1.02}>
-        <sphereGeometry args={[size, 32, 32]} />
-        <meshStandardMaterial
-          map={clouds ?? undefined}
-          color={clouds ? "#ffffff" : "#cfe8ff"}
-          transparent
-          opacity={clouds ? 0.45 : 0.2}
-          depthWrite={false}
-        />
+        <sphereGeometry args={[size, 48, 48]} />
+        <meshStandardMaterial map={clouds} transparent opacity={0.45} depthWrite={false} />
       </mesh>
       <mesh scale={1.14}>
-        <sphereGeometry args={[size, 24, 24]} />
+        <sphereGeometry args={[size, 32, 32]} />
         <meshBasicMaterial color="#4AF2C8" transparent opacity={0.12} side={BackSide} depthWrite={false} />
       </mesh>
       <group ref={moonRef}>
         <mesh>
-          <sphereGeometry args={[size * 0.27, 16, 16]} />
-          <meshStandardMaterial
-            map={moon ?? undefined}
-            color={moon ? "#ffffff" : "#b8b8b8"}
-            roughness={0.95}
-            metalness={0.05}
-          />
+          <sphereGeometry args={[size * 0.27, 24, 24]} />
+          <meshStandardMaterial map={moon} roughness={0.95} metalness={0.05} />
         </mesh>
       </group>
     </>
@@ -74,13 +62,12 @@ function EarthExtras({ size, spinSpeed, paused }: { size: number; spinSpeed: num
 }
 
 function SaturnRings({ size }: { size: number }) {
-  const rings = useProgressiveTexture("/textures/planets/2k_saturn_ring_alpha.webp", { preview: null });
+  const rings = useTexture("/textures/planets/2k_saturn_ring_alpha.webp");
   return (
     <mesh rotation={[Math.PI / 2.35, 0, 0]}>
-      <ringGeometry args={[size * 1.35, size * 2.4, 64]} />
+      <ringGeometry args={[size * 1.35, size * 2.4, 96]} />
       <meshStandardMaterial
-        map={rings ?? undefined}
-        color={rings ? "#ffffff" : "#c9b896"}
+        map={rings}
         transparent
         side={DoubleSide}
         opacity={0.92}
@@ -100,7 +87,7 @@ export function PlanetBody({ data, angleRef }: PlanetBodyProps) {
   const group = useRef<Group>(null);
   const planet = useRef<Mesh>(null);
   const highlight = useRef<Mesh>(null);
-  const map = useProgressiveTexture(data.texture);
+  const map = useTexture(data.texture);
   const isHovered = hovered === data.slug;
   const busy = phase !== "idle";
 
@@ -150,14 +137,13 @@ export function PlanetBody({ data, angleRef }: PlanetBodyProps) {
           onPointerOut={onPointerOut}
           onClick={onClick}
         >
-          <sphereGeometry args={[data.size, 32, 32]} />
+          <sphereGeometry args={[data.size, 48, 48]} />
           <meshStandardMaterial
-            map={map ?? undefined}
-            color={map ? "#ffffff" : data.accent}
+            map={map}
             roughness={0.75}
             metalness={0.08}
             emissive={data.accent}
-            emissiveIntensity={isHovered ? 0.2 : map ? 0.04 : 0.18}
+            emissiveIntensity={isHovered ? 0.2 : 0.04}
           />
         </mesh>
 
@@ -167,7 +153,7 @@ export function PlanetBody({ data, angleRef }: PlanetBodyProps) {
         {data.slug === "saturn" && <SaturnRings size={data.size} />}
 
         <mesh ref={highlight} scale={1.05}>
-          <sphereGeometry args={[data.size, 24, 24]} />
+          <sphereGeometry args={[data.size, 32, 32]} />
           <meshBasicMaterial
             color={data.accent}
             transparent
