@@ -2,8 +2,6 @@ node_modules/
 .next/
 dist/
 out/
-.env
-.env.*
 !.env.example
 .venv/
 __pycache__/
@@ -16,3 +14,4 @@ shots/
 
 # Local Netlify folder
 .netlify
+config.bat
